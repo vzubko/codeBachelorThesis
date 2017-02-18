@@ -55,11 +55,11 @@ def getColoringHEA(numberOfNodes, listOfEdges):
         return coloring
 
 
-def getChromaticNumber(graph):
+def getChromaticNumber(numberOfNodes, listOfEdges):
     """
     returns the chromatic number of a graph using HEA
     """
-    coloring = getColoringHEA(len(graph.nodes()), graph.edges())
+    coloring = getColoringHEA(numberOfNodes, listOfEdges)
     c = chromaticNumberFromColoring(coloring)
     return c
 
@@ -116,6 +116,6 @@ def chromaticChangeToColor(originalCN, newCN):
 
 
 def getChangeColors(graph):
-    originalChr = getChromaticNumber(graph)
+    originalChr = getChromaticNumber(len(graph.nodes()),graph.edges())
     colors = [chromaticChangeToColor(originalChr, x) for x in getCNumbersWithoutEachNode(graph)]
     return colors

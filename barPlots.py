@@ -54,21 +54,5 @@ def getCNumberWithoutNodesOfSameValue(graph, listOfNodes):
     return chromaticList
 
 
-def sortChanges(graph, value, originalChr):
-    """
-    Returns three lists that contain the number of nodes, which influenced the change in chromatic number:
-    reduced it, left it unchanged, or increased it (in case of error, as the algorithm is not exact).
-    """
-    chromaticList = getCNumberWithoutNodesOfSameValue(graph, getNodesWithSameValue(getListofValues(dic),value))
-    reduced = 0
-    stayed = 0
-    other = 0
-    for cnumber in chromaticList:
-        if cnumber == originalChr-1:
-            reduced += 1
-        elif cnumber == originalChr:
-            stayed += 1
-        else:
-            other += 1
-    return reduced, stayed, other
+
 

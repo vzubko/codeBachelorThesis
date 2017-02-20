@@ -120,3 +120,4 @@ def getChangeColors(graph):
     colors = [chromaticChangeToColor(originalChr, x) for x in getCNumbersWithoutEachNode(graph)]
     return colors
 
+

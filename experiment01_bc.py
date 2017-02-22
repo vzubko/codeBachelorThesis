@@ -1,39 +1,16 @@
 import graphCreator
 import chromaticNumber
+import barPlots
 import networkx as nx
-
 import matplotlib.pyplot as plt
 
 
-graph = graphCreator.randomGraph(8, 25)
+graph = graphCreator.productionNetworkGraph(15)
+dictionary = nx.betweenness_centrality(graph)
 
-# bc = nx.betweenness_centrality(graph)
-# print(bc)
-
-def getListOfBCvalues(graph):
-    bcList = []
-    bcValues = nx.betweenness_centrality(graph)
-    for bcValue in bcValues.values():
-        bcList.append(bcValue)
-    return bcList
-
-def getNodesOfSameBC(graph, bcValue):
-    bcList = getListOfBCvalues(graph)
-    sameBcValueNodes = []
-    for node in range(len(bcList)):
-        if bcList[node] == int(bcValue):
-            sameBcValueNodes.append(node)
-    return sameBcValueNodes
-
-def getCnumberBC(graph,listOfNodes):
-    chromaticList = []
-    for node in range(len(listOfNodes)):
-        cNumber = chromaticNumber.getCNumberWithoutNodes(graph, [listOfNodes[node]])
-        chromaticList.append(cNumber)
-    return chromaticList
 
 def sortChanges(graph, bcValue, originalChr):
-    chromaticList = getCnumberBC(graph,getNodesOfSameBC(graph, bcValue))
+    chromaticList = barPlots.getCNumberWithoutNodesOfSameValue(graph, barPlots.getNodesWithSameValue(barPlots.getListofValues(dictionary),bcValue))
     reduced = 0
     stayed = 0
     other = 0
@@ -57,7 +34,7 @@ def myrange(upto, offset):
 
 
 def bcStatistics(graph, maxBcValue):
-    originalChr = chromaticNumber.getChromaticNumber(graph)
+    originalChr = chromaticNumber.getChromaticNumber(len(graph.nodes()),graph.edges())
     reduced = []
     stayed = []
     other = []

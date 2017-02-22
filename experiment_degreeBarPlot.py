@@ -3,7 +3,7 @@ import barPlots
 import graphCreator
 import matplotlib.pyplot as plt
 
-graph = graphCreator.randomGraph(10,30)
+graph = graphCreator.randomGraph(20,100)
 dictionary = graph.degree()
 
 def sortChanges(graph, degree, originalChr):
@@ -57,4 +57,4 @@ def getDegreeStatistics(graph, maxDegree):
     plt.show()
 
 print("experiment running")
-print(getDegreeStatistics(graph,10))
+print(getDegreeStatistics(graph,50))

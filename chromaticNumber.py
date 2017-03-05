@@ -116,6 +116,9 @@ def chromaticChangeToColor(originalCN, newCN):
 
 
 def getChangeColors(graph):
+    """
+    returns the list of colors of nodes, which change chromatic number upon deletion its deletion
+    """
     originalChr = getChromaticNumber(len(graph.nodes()),graph.edges())
     colors = [chromaticChangeToColor(originalChr, x) for x in getCNumbersWithoutEachNode(graph)]
     return colors

@@ -4,6 +4,7 @@ My module for calculating chromatic numbers (and changes in the chromatic number
 
 import networkx as nx
 import subprocess
+import random
 
 GRAPH_FILE_PATH = "/tmp/graph.txt"
 BASE_PATH = "/tmp/"
@@ -100,6 +101,7 @@ def getCNumbersWithoutEachNode(graph):
     for node in range(len(nodesList)):
         cNumber = getCNumberWithoutOneNode(graph, node)
         chromaticList.append(cNumber)
+    print(chromaticList)
     return chromaticList
 
 
@@ -120,7 +122,76 @@ def getChangeColors(graph):
     returns the list of colors of nodes, which change chromatic number upon deletion
     """
     originalChr = getChromaticNumber(len(graph.nodes()),graph.edges())
+    print(originalChr)
     colors = [chromaticChangeToColor(originalChr, x) for x in getCNumbersWithoutEachNode(graph)]
     return colors
+
+
+def getControlNodes(numberOfNodes, listOfEdges):
+    """
+    Uses the HEA for coloring.
+    numberOfNodes should be the number of nodes in the graph, and listOfEdges should be a list of the edges.
+    The nodes are in the range 0, ..., numberOfNodes - 1.
+    Returns the coloring of the graph as a list of integers.
+    """
+
+    # write graph to file
+    with open(GRAPH_FILE_PATH, "w") as f:
+        for edge in listOfEdges:
+            f.write(str(edge[0]) + " " + str(edge[1]) + "\n")
+            f.write(str(edge[1]) + " " + str(edge[0]) + "\n")
+
+    # run algorithm on graph
+    subprocess.run(["./netctrl-wrapper.sh"])
+
+    with open(SOLUTION_PATH, "r") as f:
+        driverNodes = []
+        for line in f:
+            driverNodes.append(int(line))
+        return driverNodes
+
+
+def getControlDistr(numberOfNodes, listOfEdges, rep):
+    prob = [0] * numberOfNodes
+    for i in range(rep):
+        perm = list(range(numberOfNodes))
+        random.shuffle(perm)
+        ep = [(perm[a], perm[b]) for (a, b) in listOfEdges]
+
+        dp = getControlNodes(numberOfNodes, ep)
+        for e in dp:
+            prob[perm.index(e)] += 1/float(rep)
+    return prob
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
